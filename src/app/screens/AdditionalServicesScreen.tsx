@@ -1,4 +1,4 @@
-import { ChevronLeft, Home, Camera, Flower, ShoppingBag, PawPrint, MoreHorizontal } from "lucide-react";
+import { ChevronLeft, Home, Camera, Flower, ShoppingBag, MoreHorizontal } from "lucide-react";
 import { useLanguage } from "../i18n/LanguageContext";
 
 interface AdditionalServicesScreenProps {
@@ -31,24 +31,17 @@ export function AdditionalServicesScreen({ onBack, onServiceClick }: AdditionalS
       color: "#F4A6C1",
       description: "Event and decor flowers"
     },
-    { 
-      id: 4, 
-      name: "Boutique", 
-      icon: ShoppingBag, 
+    {
+      id: 4,
+      name: "Boutique",
+      icon: ShoppingBag,
       color: "#E6C97A",
       description: "Fashion and clothing"
     },
-    { 
-      id: 5, 
-      name: "Vet Care", 
-      icon: PawPrint, 
-      color: "#FF9F6A",
-      description: "Veterinary services"
-    },
-    { 
-      id: 6, 
-      name: "More Services", 
-      icon: MoreHorizontal, 
+    {
+      id: 5,
+      name: "More Services",
+      icon: MoreHorizontal,
       color: "#8A8A8A",
       description: "Additional services coming soon"
     },
