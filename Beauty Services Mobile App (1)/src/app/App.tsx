@@ -21,7 +21,6 @@ import { AtHomeBeautyScreen } from "./screens/AtHomeBeautyScreen";
 import { PhotographyScreen } from "./screens/PhotographyScreen";
 import { FlowerDecorationScreen } from "./screens/FlowerDecorationScreen";
 import { BoutiqueScreen } from "./screens/BoutiqueScreen";
-import { VetCareScreen } from "./screens/VetCareScreen";
 import { BottomNav } from "./components/BottomNav";
 import { Toaster } from "./components/ui/sonner";
 import { toast } from "sonner";
@@ -66,8 +65,7 @@ type Screen =
   | { type: "at-home-beauty" }
   | { type: "photography" }
   | { type: "flower-decoration" }
-  | { type: "boutique" }
-  | { type: "vet-care" };
+  | { type: "boutique" };
 
 export default function App() {
   const [screen, setScreen] = useState<Screen>({ type: "splash" });
@@ -336,8 +334,6 @@ export default function App() {
               setScreen({ type: "flower-decoration" });
             } else if (serviceName === "Boutique") {
               setScreen({ type: "boutique" });
-            } else if (serviceName === "Vet Care") {
-              setScreen({ type: "vet-care" });
             }
           }}
         />
@@ -363,12 +359,6 @@ export default function App() {
 
       {screen.type === "boutique" && (
         <BoutiqueScreen
-          onBack={() => setScreen({ type: "additional-services" })}
-        />
-      )}
-
-      {screen.type === "vet-care" && (
-        <VetCareScreen
           onBack={() => setScreen({ type: "additional-services" })}
         />
       )}
