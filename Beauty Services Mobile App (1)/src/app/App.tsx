@@ -16,6 +16,12 @@ import { MyBookingsScreen } from "./screens/MyBookingsScreen";
 import { FavoriteSalonsScreen } from "./screens/FavoriteSalonsScreen";
 import { TodaysDealScreen } from "./screens/TodaysDealScreen";
 import { RescheduleAppointmentScreen } from "./screens/RescheduleAppointmentScreen";
+import { AdditionalServicesScreen } from "./screens/AdditionalServicesScreen";
+import { AtHomeBeautyScreen } from "./screens/AtHomeBeautyScreen";
+import { PhotographyScreen } from "./screens/PhotographyScreen";
+import { FlowerDecorationScreen } from "./screens/FlowerDecorationScreen";
+import { BoutiqueScreen } from "./screens/BoutiqueScreen";
+import { VetCareScreen } from "./screens/VetCareScreen";
 import { BottomNav } from "./components/BottomNav";
 import { Toaster } from "./components/ui/sonner";
 import { toast } from "sonner";
@@ -55,7 +61,13 @@ type Screen =
   | { type: "my-bookings" }
   | { type: "favorite-salons" }
   | { type: "todays-deals" }
-  | { type: "reschedule-appointment"; appointmentId: number };
+  | { type: "reschedule-appointment"; appointmentId: number }
+  | { type: "additional-services" }
+  | { type: "at-home-beauty" }
+  | { type: "photography" }
+  | { type: "flower-decoration" }
+  | { type: "boutique" }
+  | { type: "vet-care" };
 
 export default function App() {
   const [screen, setScreen] = useState<Screen>({ type: "splash" });
@@ -265,7 +277,7 @@ export default function App() {
         />
       )}
 
-      {screen.type === "account" && <AccountScreen onMyBookingsClick={() => setScreen({ type: "my-bookings" })} onFavoriteSalonsClick={() => setScreen({ type: "favorite-salons" })} />}
+      {screen.type === "account" && <AccountScreen onMyBookingsClick={() => setScreen({ type: "my-bookings" })} onFavoriteSalonsClick={() => setScreen({ type: "favorite-salons" })} onServicesClick={() => setScreen({ type: "additional-services" })} />}
 
       {screen.type === "my-bookings" && (
         <MyBookingsScreen
@@ -309,6 +321,55 @@ export default function App() {
               )
             );
           }}
+        />
+      )}
+
+      {screen.type === "additional-services" && (
+        <AdditionalServicesScreen
+          onBack={() => setScreen({ type: "account" })}
+          onServiceClick={(serviceName) => {
+            if (serviceName === "At Home Beauty Services") {
+              setScreen({ type: "at-home-beauty" });
+            } else if (serviceName === "Photography") {
+              setScreen({ type: "photography" });
+            } else if (serviceName === "Flower Decoration") {
+              setScreen({ type: "flower-decoration" });
+            } else if (serviceName === "Boutique") {
+              setScreen({ type: "boutique" });
+            } else if (serviceName === "Vet Care") {
+              setScreen({ type: "vet-care" });
+            }
+          }}
+        />
+      )}
+
+      {screen.type === "at-home-beauty" && (
+        <AtHomeBeautyScreen
+          onBack={() => setScreen({ type: "additional-services" })}
+        />
+      )}
+
+      {screen.type === "photography" && (
+        <PhotographyScreen
+          onBack={() => setScreen({ type: "additional-services" })}
+        />
+      )}
+
+      {screen.type === "flower-decoration" && (
+        <FlowerDecorationScreen
+          onBack={() => setScreen({ type: "additional-services" })}
+        />
+      )}
+
+      {screen.type === "boutique" && (
+        <BoutiqueScreen
+          onBack={() => setScreen({ type: "additional-services" })}
+        />
+      )}
+
+      {screen.type === "vet-care" && (
+        <VetCareScreen
+          onBack={() => setScreen({ type: "additional-services" })}
         />
       )}
 

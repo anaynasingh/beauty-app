@@ -7,20 +7,23 @@ import {
   LogOut,
   ChevronRight,
   Globe,
+  Sparkles,
 } from "lucide-react";
 import { useLanguage } from "../i18n/LanguageContext";
 
 interface AccountScreenProps {
   onMyBookingsClick?: () => void;
   onFavoriteSalonsClick?: () => void;
+  onServicesClick?: () => void;
 }
 
-export function AccountScreen({ onMyBookingsClick, onFavoriteSalonsClick }: AccountScreenProps) {
+export function AccountScreen({ onMyBookingsClick, onFavoriteSalonsClick, onServicesClick }: AccountScreenProps) {
   const { language, setLanguage, t } = useLanguage();
 
   const menuItems = [
     { icon: Calendar, label: t("myBookings"), color: "#6C4AB6", onClick: onMyBookingsClick },
     { icon: Heart, label: t("favoriteSalons"), color: "#F4A6C1", onClick: onFavoriteSalonsClick },
+    { icon: Sparkles, label: "Services", color: "#E6C97A", onClick: onServicesClick },
     { icon: MessageSquare, label: t("myReviews"), color: "#E6C97A", onClick: () => {} },
     { icon: HelpCircle, label: t("helpSupport"), color: "#6C4AB6", onClick: () => {} },
   ];
