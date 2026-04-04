@@ -1,17 +1,7 @@
-import { ChevronLeft, MapPin, Star, Phone } from "lucide-react";
-
-interface AtHomeBeautyProvider {
+interface AtHomeBeautyService {
   id: number;
-  name: string;
-  rating: number;
-  reviews: number;
-  location: string;
-  distance: string;
-  phone: string;
+  title: string;
   image: string;
-  specialties: string[];
-  experience: number;
-  availableToday: boolean;
 }
 
 interface AtHomeBeautyScreenProps {
@@ -19,126 +9,98 @@ interface AtHomeBeautyScreenProps {
   onProviderClick?: (providerId: number) => void;
 }
 
+import { useState } from "react";
+
 export function AtHomeBeautyScreen({ onBack, onProviderClick }: AtHomeBeautyScreenProps) {
-  const providers: AtHomeBeautyProvider[] = [
+  const [gender, setGender] = useState<"men" | "women">("women");
+  
+  const services: AtHomeBeautyService[] = [
     {
       id: 1,
-      name: "Priya's Beauty Services",
-      rating: 4.8,
-      reviews: 245,
-      location: "Sector 12, Noida",
-      distance: "2.5 km",
-      phone: "+91 98765 43210",
+      title: "Bridal Makeup",
       image: "https://health-routes.co.uk/wp-content/uploads/2023/05/4.jpg",
-      specialties: ["Hair", "Makeup", "Facial", "Waxing"],
-      experience: 8,
-      availableToday: true,
     },
     {
       id: 2,
-      name: "Glamour Home Salon",
-      rating: 4.7,
-      reviews: 189,
-      location: "Indirapuram",
-      distance: "4.2 km",
-      phone: "+91 87654 32109",
+      title: "Facial Care",
       image: "https://tse1.explicit.bing.net/th/id/OIP.TMOW8Fm5WEd9A6S66BE4bgHaHa?rs=1&pid=ImgDetMain&o=7&rm=3",
-      specialties: ["Bridal Makeup", "Hair Color", "Nails", "Threading"],
-      experience: 6,
-      availableToday: false,
     },
     {
       id: 3,
-      name: "Radiant Beauty at Home",
-      rating: 4.9,
-      reviews: 312,
-      location: "Dwarka",
-      distance: "5.8 km",
-      phone: "+91 76543 21098",
+      title: "Hair Styling",
       image: "https://www.glamoureyebrowmason.com/wp-content/uploads/2021/02/Hands.jpg",
-      specialties: ["Skincare", "Facial", "Massage", "Makeup"],
-      experience: 10,
-      availableToday: true,
+    },
+    {
+      id: 4,
+      title: "Waxing",
+      image: "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=500&h=500&fit=crop",
+    },
+    {
+      id: 5,
+      title: "Threading",
+      image: "https://images.unsplash.com/photo-1487412912498-0447578fcca8?w=500&h=500&fit=crop",
+    },
+    {
+      id: 6,
+      title: "Manicure & Pedicure",
+      image: "https://images.unsplash.com/photo-1610992015732-2449b76344bc?w=500&h=500&fit=crop",
+    },
+    {
+      id: 7,
+      title: "Party Makeup",
+      image: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=500&h=500&fit=crop",
+    },
+    {
+      id: 8,
+      title: "Spa & Massage",
+      image: "https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=500&h=500&fit=crop",
     },
   ];
 
   return (
-    <div className="pb-20">
-      {/* Header */}
-      <div className="bg-gradient-to-b from-[#FF6B9D] to-[#E64980] px-6 pt-6 pb-8 rounded-b-3xl">
-        <button
-          onClick={onBack}
-          className="flex items-center gap-2 text-white mb-6 active:opacity-70 transition-opacity"
-        >
-          <ChevronLeft className="w-6 h-6" />
-          <span>Back</span>
-        </button>
-        <h1 className="text-3xl font-bold text-white mb-2">At Home Beauty Services</h1>
-        <p className="text-white text-sm opacity-90">Professional beauty at your doorstep</p>
+    <div className="flex flex-col min-h-screen bg-white">
+      <div className="flex items-center p-4 border-b">
+        <button onClick={onBack} className="mr-2 text-lg">←</button>
+        <h1 className="text-xl font-semibold">At Home Beauty Services</h1>
       </div>
 
-      {/* Providers List */}
-      <div className="px-6 py-6 space-y-4">
-        {providers.map((provider) => (
+      {/* Men/Women Toggle */}
+      <div className="px-4 py-4 flex gap-3 border-b bg-[#F8F7FF]">
+        <button
+          onClick={() => setGender("women")}
+          className={`flex-1 py-3 px-4 rounded-lg font-semibold transition-all ${
+            gender === "women"
+              ? "bg-[#FF6B9D] text-white shadow-md"
+              : "bg-white text-[#FF6B9D] border border-[#FFD9E8]"
+          }`}
+        >
+          Women
+        </button>
+        <button
+          onClick={() => setGender("men")}
+          className={`flex-1 py-3 px-4 rounded-lg font-semibold transition-all ${
+            gender === "men"
+              ? "bg-[#6C4AB6] text-white shadow-md"
+              : "bg-white text-[#6C4AB6] border border-[#E0D9F0]"
+          }`}
+        >
+          Men
+        </button>
+      </div>
+
+      <div className="p-4 grid grid-cols-2 gap-4">
+        {services.map((service) => (
           <button
-            key={provider.id}
-            onClick={() => onProviderClick?.(provider.id)}
-            className="bg-white rounded-2xl overflow-hidden active:scale-[0.98] transition-all w-full flex flex-col h-96"
-            style={{ boxShadow: "0 2px 12px rgba(108, 74, 182, 0.08)" }}
+            key={service.id}
+            onClick={() => onProviderClick?.(service.id)}
+            className="bg-gray-50 rounded-xl shadow-sm flex flex-col items-center p-3 hover:shadow-md transition text-left"
           >
-            {/* Image */}
-            <div className="relative h-40 bg-gray-200 flex-shrink-0">
-              <img src={provider.image} alt={provider.name} className="w-full h-full object-cover" />
-              {provider.availableToday && (
-                <div className="absolute top-3 right-3 bg-green-500 text-white px-3 py-1 rounded-full text-xs font-semibold">
-                  Available Today
-                </div>
-              )}
-            </div>
-
-            {/* Content */}
-            <div className="p-4 flex flex-col">
-              <h3 className="text-lg font-bold text-[#1F1F1F] mb-2 line-clamp-2">{provider.name}</h3>
-
-              {/* Rating */}
-              <div className="flex items-center gap-2 mb-2">
-                <div className="flex items-center gap-1">
-                  <Star className="w-4 h-4 fill-[#F4A6C1] text-[#F4A6C1]" />
-                  <span className="font-semibold text-[#1F1F1F]">{provider.rating}</span>
-                </div>
-                <span className="text-xs text-[#8A8A8A]">({provider.reviews} reviews)</span>
-              </div>
-
-              {/* Location */}
-              <div className="flex items-center gap-2 mb-1 text-sm text-[#8A8A8A]">
-                <MapPin className="w-4 h-4" />
-                <span className="line-clamp-1">{provider.location}</span>
-                <span className="text-[#FF6B9D]">{provider.distance}</span>
-              </div>
-
-              {/* Experience */}
-              <div className="text-xs text-[#8A8A8A] mb-2">
-                {provider.experience} years of experience
-              </div>
-
-              {/* Specialties */}
-              <div className="flex flex-wrap gap-2 mb-auto">
-                {provider.specialties.slice(0, 3).map((specialty, idx) => (
-                  <span
-                    key={idx}
-                    className="text-xs bg-[#F3EEFF] text-[#6C4AB6] px-2 py-1 rounded-full"
-                  >
-                    {specialty}
-                  </span>
-                ))}
-              </div>
-
-              {/* Contact Button */}
-              <button className="w-full bg-gradient-to-r from-[#FF6B9D] to-[#E64980] text-white py-2 rounded-lg font-semibold flex items-center justify-center gap-2 active:opacity-90 transition-opacity mt-auto">
-                <Phone className="w-4 h-4" />
-                Book Now
-              </button>
-            </div>
+            <img
+              src={service.image}
+              alt={service.title}
+              className="w-full h-28 object-cover rounded-lg mb-2"
+            />
+            <div className="text-center text-sm font-medium mt-1">{service.title}</div>
           </button>
         ))}
       </div>

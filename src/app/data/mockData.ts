@@ -304,6 +304,55 @@ export const salons = [
       { id: 3, author: "Mohit Singh", rating: 4, comment: "Affordable and quality services." },
     ],
   },
+  {
+    id: 9,
+    name: "Aura Luxe Studio",
+    rating: 4.6,
+    reviewCount: 118,
+    priceRange: "₹₹₹",
+    distance: "22.4 km",
+    offer: "15% off on weekday bookings",
+    image: "beauty-salon",
+    address: "204 Skyline Avenue, East District",
+    about: "Aura Luxe Studio offers premium beauty and grooming services for special occasions and everyday care, with a focus on personalized consultations.",
+    services: [
+      { id: 1, name: "Hair Spa", duration: "1 hr", price: 2200, mrp: 2800 },
+      { id: 2, name: "Korean Facial", duration: "75 min", price: 2600, mrp: 3200 },
+      { id: 3, name: "Waxing - Full Arms", duration: "35 min", price: 700, mrp: 900 },
+    ],
+    stylists: [
+      { id: 10, name: "Kritika Bansal", rating: 4.7, experience: "9 years", photo: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400" },
+    ],
+    reviews: [
+      { id: 1, author: "Tanvi Gupta", rating: 5, comment: "Excellent Korean facial and premium service quality." },
+      { id: 2, author: "Komal Arora", rating: 4, comment: "A bit far, but worth visiting for special treatments." },
+      { id: 3, author: "Ritu S", rating: 5, comment: "Very clean salon and friendly experts." },
+    ],
+  },
+  {
+    id: 10,
+    name: "Royal Glow Retreat",
+    rating: 4.4,
+    reviewCount: 82,
+    priceRange: "₹₹",
+    distance: "41.7 km",
+    image: "salon-interior",
+    address: "89 Highway Ring Road, Outer Zone",
+    about: "Royal Glow Retreat is a destination-style salon and spa with spacious interiors, wellness packages, and advanced skin and hair treatments.",
+    services: [
+      { id: 1, name: "Deep Cleansing Facial", duration: "60 min", price: 1500, mrp: 1900 },
+      { id: 2, name: "Head Massage", duration: "40 min", price: 600, mrp: 850 },
+      { id: 3, name: "Threading - Eyebrows", duration: "15 min", price: 120, mrp: 180 },
+    ],
+    stylists: [
+      { id: 11, name: "Farah Khan", rating: 4.5, experience: "7 years", photo: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400" },
+    ],
+    reviews: [
+      { id: 1, author: "Nisha Jain", rating: 4, comment: "Great weekend package and relaxing ambiance." },
+      { id: 2, author: "Pooja Menon", rating: 5, comment: "The head massage and facial were excellent." },
+      { id: 3, author: "Anand V", rating: 4, comment: "Long drive, but good value for full-day treatments." },
+    ],
+  },
 ];
 
 export const appointments = [];
@@ -339,6 +388,18 @@ export interface SalonOwner {
     thisMonth: number;
     thisWeek: number;
   };
+  locations?: Location[];
+}
+
+export interface Location {
+  id: number;
+  name: string;
+  address: string;
+  earnings: {
+    total: number;
+    thisMonth: number;
+    thisWeek: number;
+  };
 }
 
 export interface Staff {
@@ -349,6 +410,8 @@ export interface Staff {
   phone: string;
   email: string;
   joinDate: string;
+  locationId?: number;
+  locationName?: string;
 }
 
 export interface Offer {
@@ -395,8 +458,8 @@ export const salonOwners: SalonOwner[] = [
       sunday: { open: "11:00 AM", close: "8:00 PM" },
     },
     staff: [
-      { id: 1, name: "Priya Sharma", specialization: "Hair Styling", experience: "8 years", phone: "9111111111", email: "priya@glamour.com", joinDate: "2020-05-10" },
-      { id: 2, name: "Raj Malhotra", specialization: "Hair Color", experience: "5 years", phone: "9111111112", email: "raj@glamour.com", joinDate: "2022-03-15" },
+      { id: 1, name: "Priya Sharma", specialization: "Hair Styling", experience: "8 years", phone: "9111111111", email: "priya@glamour.com", joinDate: "2020-05-10", locationId: 1, locationName: "Downtown Branch" },
+      { id: 2, name: "Raj Malhotra", specialization: "Hair Color", experience: "5 years", phone: "9111111112", email: "raj@glamour.com", joinDate: "2022-03-15", locationId: 2, locationName: "Mall Branch" },
     ],
     offers: [
       { id: 1, title: "20% off on Hair Services", description: "Get 20% discount on all hair services", discount: 20, validFrom: "2026-02-01", validTill: "2026-02-28", applicableServices: [1, 2, 3] },
@@ -406,6 +469,48 @@ export const salonOwners: SalonOwner[] = [
       thisMonth: 15000,
       thisWeek: 3500,
     },
+    locations: [
+      {
+        id: 1,
+        name: "Downtown Branch",
+        address: "123 Fashion Street, Downtown",
+        earnings: {
+          total: 42000,
+          thisMonth: 5000,
+          thisWeek: 1200,
+        },
+      },
+      {
+        id: 2,
+        name: "Mall Branch",
+        address: "456 Shopping Mall, Central Plaza",
+        earnings: {
+          total: 33000,
+          thisMonth: 4000,
+          thisWeek: 900,
+        },
+      },
+      {
+        id: 3,
+        name: "Riverside Branch",
+        address: "22 Riverwalk Road, Riverside",
+        earnings: {
+          total: 28000,
+          thisMonth: 3400,
+          thisWeek: 800,
+        },
+      },
+      {
+        id: 4,
+        name: "Airport Branch",
+        address: "Terminal Road, Airport District",
+        earnings: {
+          total: 22000,
+          thisMonth: 2600,
+          thisWeek: 600,
+        },
+      },
+    ],
   },
   {
     id: 2,
@@ -432,6 +537,48 @@ export const salonOwners: SalonOwner[] = [
       thisMonth: 12000,
       thisWeek: 2800,
     },
+    locations: [
+      {
+        id: 1,
+        name: "Central Plaza Branch",
+        address: "456 Style Avenue, Central Plaza",
+        earnings: {
+          total: 30000,
+          thisMonth: 3600,
+          thisWeek: 850,
+        },
+      },
+      {
+        id: 2,
+        name: "West Side Branch",
+        address: "789 West Avenue, Downtown",
+        earnings: {
+          total: 25000,
+          thisMonth: 3000,
+          thisWeek: 700,
+        },
+      },
+      {
+        id: 3,
+        name: "City Center Branch",
+        address: "10 City Center Lane, Midtown",
+        earnings: {
+          total: 23000,
+          thisMonth: 2800,
+          thisWeek: 650,
+        },
+      },
+      {
+        id: 4,
+        name: "Green Park Branch",
+        address: "Green Park Main Road, South Zone",
+        earnings: {
+          total: 20000,
+          thisMonth: 2600,
+          thisWeek: 600,
+        },
+      },
+    ],
   },
 ];
 

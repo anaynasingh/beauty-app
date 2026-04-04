@@ -36,12 +36,15 @@ import { SalonStaffScreen } from "./screens/SalonStaffScreen";
 import { SalonOffersScreen } from "./screens/SalonOffersScreen";
 import { SalonEarningsScreen } from "./screens/SalonEarningsScreen";
 import { SalonBookingsScreen } from "./screens/SalonBookingsScreen";
+import { SalonServicesScreen } from "./screens/SalonServicesScreen";
+import { SalonGalleryScreen } from "./screens/SalonGalleryScreen";
+import { SalonProductsScreen } from "./screens/SalonProductsScreen";
 import { AdminDashboardScreen } from "./screens/AdminDashboardScreen";
 import { BottomNav } from "./components/BottomNav";
 import { Toaster } from "./components/ui/sonner";
 import { toast } from "sonner";
 import { salons, salonOwners, pendingSalonRegistrations } from "./data/mockData";
-import type { SalonOwner } from "./data/mockData";
+import type { SalonOwner, Staff } from "./data/mockData";
 
 interface Appointment {
   id: number;
@@ -59,6 +62,7 @@ type Screen =
   | { type: "splash" }
   | { type: "login-role-selection" }
   | { type: "login" }
+  | { type: "salon-owner-login" }
   | { type: "sign-up" }
   | { type: "home" }
   | { type: "category"; categoryName: string }
@@ -103,6 +107,7 @@ type Screen =
   | { type: "salon-staff" }
   | { type: "salon-bookings" }
   | { type: "salon-offers" }
+  | { type: "salon-services" }
   | { type: "salon-earnings" }
   | { type: "salon-gallery" }
   | { type: "salon-products" }
@@ -166,17 +171,29 @@ export default function App() {
           }}
           onSelectSalonOwner={() => {
             setUserRole("salon-owner");
-            setScreen({ type: "login" }); // or another valid screen type for salon owner login
+            setScreen({ type: "salon-owner-login" });
           }}
           onBack={() => setScreen({ type: "splash" })}
         />
       )}
 
-      {/* LoginScreen: restore navigation props for sign in and sign up */}
       {screen.type === "login" && (
         <LoginScreen
           onLogin={() => setScreen({ type: "home" })}
           onSignUp={() => setScreen({ type: "sign-up" })}
+        />
+      )}
+
+      {screen.type === "salon-owner-login" && (
+        <SalonOwnerLoginScreen
+          onSignIn={() => {
+            const approvedSalon = allSalons.find((salon) => salon.status === "approved");
+            if (approvedSalon) {
+              setCurrentSalonId(approvedSalon.id);
+            }
+            setScreen({ type: "salon-owner-dashboard" });
+          }}
+          onBack={() => setScreen({ type: "login-role-selection" })}
         />
       )}
 
@@ -206,7 +223,7 @@ export default function App() {
             else if (categoryName === "Events") setScreen({ type: "events" });
             else if (categoryName === "Beauty at Home") setScreen({ type: "at-home-beauty" });
             else if (categoryName === "Photography") setScreen({ type: "photography" });
-            else if (categoryName === "Flower Decoration") setScreen({ type: "flower-decoration" });
+            else if (categoryName === "Florists") setScreen({ type: "flower-decoration" });
             else if (categoryName === "Boutique") setScreen({ type: "boutique" });
             else if (categoryName === "More Services") setScreen({ type: "additional-services" });
             else setScreen({ type: "category", categoryName });
@@ -217,7 +234,7 @@ export default function App() {
       {screen.type === "spa-category" && (
         <SpaCategoryScreen onBack={() => setScreen({ type: "home" })} />
       )}
-      {screen.type === "beauty-category" && <BeautyCategoryScreen onBack={() => setScreen({ type: "home" })} />}
+      {screen.type === "beauty-category" && <BeautyCategoryScreen onBack={() => setScreen({ type: "home" })} onSalonClick={(salonId) => setScreen({ type: "salon-detail", salonId })} />}
       {screen.type === "salon-category" && <SalonCategoryScreen onBack={() => setScreen({ type: "home" })} onSalonClick={(salonId) => setScreen({ type: "salon-detail", salonId })} />}
       {screen.type === "category" && (
         <CategoryScreen
@@ -369,7 +386,7 @@ export default function App() {
       {screen.type === "additional-services" && <AdditionalServicesScreen onBack={() => setScreen({ type: "account" })} onServiceClick={(serviceName) => {
         if (serviceName === "At Home Beauty Services") setScreen({ type: "at-home-beauty" });
         else if (serviceName === "Photography") setScreen({ type: "photography" });
-        else if (serviceName === "Flower Decoration") setScreen({ type: "flower-decoration" });
+        else if (serviceName === "Florists") setScreen({ type: "flower-decoration" });
         else if (serviceName === "Boutique") setScreen({ type: "boutique" });
       }} />}
       {screen.type === "at-home-beauty" && <AtHomeBeautyScreen onBack={() => setScreen({ type: "home" })} />}
@@ -404,12 +421,14 @@ export default function App() {
         toast.success("Salon registered! Waiting for verification...", { description: "Admin will review your details soon." });
       }} onBack={() => setScreen({ type: "sign-up" })} />}
       {screen.type === "salon-owner-verification" && <SalonOwnerVerificationScreen salonName={getCurrentSalon()?.shopName || "Your Salon"} registrationDate={getCurrentSalon()?.createdAt || new Date().toISOString()} onBack={() => { if (getCurrentSalon()?.status === "approved") setScreen({ type: "salon-owner-dashboard" }); else setScreen({ type: "login" }); }} />}
-      {screen.type === "salon-owner-dashboard" && <SalonOwnerDashboardScreen salonName={getCurrentSalon()?.shopName || "My Salon"} totalEarnings={getCurrentSalon()?.earnings?.total || 0} monthlyEarnings={getCurrentSalon()?.earnings?.thisMonth || 0} weeklyEarnings={getCurrentSalon()?.earnings?.thisWeek || 0} pendingBookings={3} onNavigate={(page) => {
+      {screen.type === "salon-owner-dashboard" && <SalonOwnerDashboardScreen salonName={getCurrentSalon()?.shopName || "My Salon"} totalEarnings={getCurrentSalon()?.earnings?.total || 0} monthlyEarnings={getCurrentSalon()?.earnings?.thisMonth || 0} weeklyEarnings={getCurrentSalon()?.earnings?.thisWeek || 0} pendingBookings={3} locations={getCurrentSalon()?.locations || []} onNavigate={(page) => {
         switch (page) {
           case "calendar": setScreen({ type: "salon-calendar" }); break;
           case "staff": setScreen({ type: "salon-staff" }); break;
           case "bookings": setScreen({ type: "salon-bookings" }); break;
+          case "offers-management": setScreen({ type: "salon-offers" }); break;
           case "offers": setScreen({ type: "salon-offers" }); break;
+          case "services": setScreen({ type: "salon-services" }); break;
           case "gallery": setScreen({ type: "salon-gallery" }); break;
           case "products": setScreen({ type: "salon-products" }); break;
           case "earnings": setScreen({ type: "salon-earnings" }); break;
@@ -417,28 +436,20 @@ export default function App() {
         }
       }} onLogout={() => { setUserRole(null); setCurrentSalonId(null); setScreen({ type: "login" }); }} />}
       {screen.type === "salon-calendar" && <SalonTimingsScreen salonName={getCurrentSalon()?.shopName || "My Salon"} onBack={() => setScreen({ type: "salon-owner-dashboard" })} />}
-      {screen.type === "salon-staff" && <SalonStaffScreen salonName={getCurrentSalon()?.shopName || "My Salon"} initialStaff={getCurrentSalon()?.staff || []} onBack={() => setScreen({ type: "salon-owner-dashboard" })} />}
+      {screen.type === "salon-staff" && <SalonStaffScreen salonName={getCurrentSalon()?.shopName || "My Salon"} initialStaff={getCurrentSalon()?.staff || []} locations={getCurrentSalon()?.locations || []} onStaffChange={(updatedStaff: Staff[]) => {
+        if (!currentSalonId) return;
+        setAllSalons((prev) =>
+          prev.map((salon) =>
+            salon.id === currentSalonId ? { ...salon, staff: updatedStaff } : salon
+          )
+        );
+      }} onBack={() => setScreen({ type: "salon-owner-dashboard" })} />}
       {screen.type === "salon-bookings" && <SalonBookingsScreen salonName={getCurrentSalon()?.shopName || "My Salon"} onBack={() => setScreen({ type: "salon-owner-dashboard" })} />}
       {screen.type === "salon-offers" && <SalonOffersScreen salonName={getCurrentSalon()?.shopName || "My Salon"} onBack={() => setScreen({ type: "salon-owner-dashboard" })} />}
+      {screen.type === "salon-services" && <SalonServicesScreen salonName={getCurrentSalon()?.shopName || "My Salon"} onBack={() => setScreen({ type: "salon-owner-dashboard" })} />}
       {screen.type === "salon-earnings" && <SalonEarningsScreen salonName={getCurrentSalon()?.shopName || "My Salon"} totalEarnings={getCurrentSalon()?.earnings?.total || 0} monthlyEarnings={getCurrentSalon()?.earnings?.thisMonth || 0} weeklyEarnings={getCurrentSalon()?.earnings?.thisWeek || 0} onBack={() => setScreen({ type: "salon-owner-dashboard" })} />}
-      {screen.type === "salon-gallery" && (
-        <div className="h-screen flex items-center justify-center bg-white">
-          <div className="text-center">
-            <p className="text-[#8A8A8A] mb-4">Gallery Feature</p>
-            <p className="text-sm text-[#8A8A8A] mb-4">Upload your salon photos here</p>
-            <button onClick={() => setScreen({ type: "salon-owner-dashboard" })} className="px-6 py-2 bg-[#6C4AB6] text-white rounded-lg">Back to Dashboard</button>
-          </div>
-        </div>
-      )}
-      {screen.type === "salon-products" && (
-        <div className="h-screen flex items-center justify-center bg-white">
-          <div className="text-center">
-            <p className="text-[#8A8A8A] mb-4">Products Management</p>
-            <p className="text-sm text-[#8A8A8A] mb-4">Manage your products here</p>
-            <button onClick={() => setScreen({ type: "salon-owner-dashboard" })} className="px-6 py-2 bg-[#6C4AB6] text-white rounded-lg">Back to Dashboard</button>
-          </div>
-        </div>
-      )}
+      {screen.type === "salon-gallery" && <SalonGalleryScreen salonName={getCurrentSalon()?.shopName || "My Salon"} onBack={() => setScreen({ type: "salon-owner-dashboard" })} />}
+      {screen.type === "salon-products" && <SalonProductsScreen salonName={getCurrentSalon()?.shopName || "My Salon"} onBack={() => setScreen({ type: "salon-owner-dashboard" })} />}
       {screen.type === "salon-settings" && (
         <div className="h-screen flex items-center justify-center bg-white">
           <div className="text-center">

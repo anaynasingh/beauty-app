@@ -84,7 +84,7 @@ export function HomeScreen({ onServiceClick, onSalonClick, onSpecialOffersClick,
     },
     {
       id: 7,
-      name: "Flower Decoration",
+      name: "Florists",
       icon: Flower,
       color: "#F4A6C1",
       image: "https://images.unsplash.com/photo-1518895949257-7621c3c786d7?w=500&h=500&fit=crop",
@@ -141,6 +141,33 @@ export function HomeScreen({ onServiceClick, onSalonClick, onSpecialOffersClick,
   // State for selected broad category
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
+  const sponsoredAds = [
+    {
+      id: "ad-1",
+      title: "Flat 25% Off",
+      subtitle: "On bridal makeup packages",
+      badge: "Sponsored",
+      bgClass: "from-[#FFE4EC] to-[#FFD3E2]",
+      textClass: "text-[#A6315D]",
+    },
+    {
+      id: "ad-2",
+      title: "Photography Combo",
+      subtitle: "Shoot + Reels from ₹9,999",
+      badge: "Ad",
+      bgClass: "from-[#E8EDFF] to-[#DCE4FF]",
+      textClass: "text-[#3047A6]",
+    },
+    {
+      id: "ad-3",
+      title: "At-Home Spa",
+      subtitle: "Get free head massage add-on",
+      badge: "Sponsored",
+      bgClass: "from-[#E9FBF5] to-[#D8F5EB]",
+      textClass: "text-[#1E7A57]",
+    },
+  ];
+
 
 
   return (
@@ -183,8 +210,8 @@ export function HomeScreen({ onServiceClick, onSalonClick, onSpecialOffersClick,
       {/* Top Categories - Grid of Boxes, Navigate on click */}
       <div className="mb-6">
         <h3 className="text-[#1F1F1F] px-6 mb-4">{t("topCategories")}</h3>
-        <div className="px-4">
-          <div className="grid grid-cols-4 gap-6 p-2">
+        <div className="px-3">
+          <div className="grid grid-cols-4 gap-3 md:gap-4">
             {groupedServices.map((cat) => (
               <div key={cat.name} className="flex justify-center items-center">
                 <ServiceCard
@@ -218,6 +245,25 @@ export function HomeScreen({ onServiceClick, onSalonClick, onSpecialOffersClick,
           </div>
           <ChevronRight className="w-6 h-6 text-white flex-shrink-0" />
         </button>
+      </div>
+
+      {/* Deals & Offers Slider */}
+      <div className="px-6 mb-5">
+        <div className="flex gap-3 overflow-x-auto no-scrollbar -mx-6 px-6">
+          {sponsoredAds.map((ad) => (
+            <div
+              key={ad.id}
+              className={`min-w-[220px] rounded-2xl p-4 bg-gradient-to-r ${ad.bgClass}`}
+            >
+              <div className="flex items-center justify-between mb-2">
+                <span className={`text-xs font-semibold ${ad.textClass}`}>{ad.badge}</span>
+                <span className={`text-xs ${ad.textClass} opacity-80`}>Limited</span>
+              </div>
+              <p className={`font-semibold ${ad.textClass}`}>{ad.title}</p>
+              <p className={`text-xs mt-1 ${ad.textClass} opacity-90`}>{ad.subtitle}</p>
+            </div>
+          ))}
+        </div>
       </div>
 
       {/* Deals & Offers Slider */}
@@ -386,6 +432,15 @@ export function HomeScreen({ onServiceClick, onSalonClick, onSpecialOffersClick,
               <ServiceCard name={s.title} image={s.image} onClick={() => {}} />
             </div>
           ))}
+        </div>
+      </div>
+
+      {/* Ads Placeholder Section - Above Navigation Bar */}
+      <div className="px-6 mt-6 mb-8">
+        <div className="bg-gradient-to-r from-[#6C4AB6]/10 to-[#F4A6C1]/10 border border-[#6C4AB6]/20 rounded-xl p-4 text-center">
+          <p className="text-xs text-[#8A8A8A] uppercase tracking-wide font-medium">Promotional Space</p>
+          <p className="text-sm text-[#6C4AB6] font-semibold mt-2">DOOH & Advertisements</p>
+          <p className="text-xs text-[#8A8A8A] mt-1">Premium advertising placement</p>
         </div>
       </div>
     </div>

@@ -277,6 +277,49 @@ const spaSections = [
   },
 ];
 
+const spaShops = [
+  {
+    id: 1,
+    name: "Tranquil Touch Spa",
+    rating: 4.8,
+    reviews: 540,
+    distance: "3.2 km",
+    priceRange: "₹₹₹",
+    image: "https://images.unsplash.com/photo-1544161515-4ab6ce6db874?auto=format&fit=crop&w=900&q=80",
+    specialties: "Aromatherapy, Swedish Massage",
+  },
+  {
+    id: 2,
+    name: "Serenity Springs Wellness",
+    rating: 4.7,
+    reviews: 410,
+    distance: "6.8 km",
+    priceRange: "₹₹",
+    image: "https://images.unsplash.com/photo-1515377905703-c4788e51af15?auto=format&fit=crop&w=900&q=80",
+    specialties: "Deep Tissue, Hot Stone Therapy",
+  },
+  {
+    id: 3,
+    name: "Lotus Calm Retreat",
+    rating: 4.9,
+    reviews: 620,
+    distance: "11.5 km",
+    priceRange: "₹₹₹",
+    image: "https://images.unsplash.com/photo-1519823551278-64ac92734fb1?auto=format&fit=crop&w=900&q=80",
+    specialties: "Post Natal Care, Detox Rituals",
+  },
+  {
+    id: 4,
+    name: "Urban Zen Therapy Spa",
+    rating: 4.6,
+    reviews: 298,
+    distance: "18.1 km",
+    priceRange: "₹₹",
+    image: "https://images.unsplash.com/photo-1552693673-1bf958298935?auto=format&fit=crop&w=900&q=80",
+    specialties: "Pain Relief, Reflexology",
+  },
+];
+
 export default function SpaCategoryScreen({ onBack }: { onBack?: () => void }) {
   const [selected, setSelected] = useState(0);
   const sectionRefs = useRef<(HTMLDivElement | null)[]>([]);
@@ -327,6 +370,36 @@ export default function SpaCategoryScreen({ onBack }: { onBack?: () => void }) {
           ))}
         </div>
       </div>
+
+      {/* Dedicated Spa Shops (separate from salon/beauty shops) */}
+      <div className="px-6 pt-2 pb-4">
+        <h3 className="text-xl font-bold text-[#1F1F1F] mb-1">Spa Shops Near You</h3>
+        <p className="text-xs text-[#8A8A8A] mb-4">Dedicated spa centers only</p>
+        <div className="space-y-3">
+          {spaShops.map((shop) => (
+            <div
+              key={shop.id}
+              className="bg-white border-2 border-[#E0D9F0] rounded-xl p-3"
+              style={{ boxShadow: "0 2px 12px rgba(108, 74, 182, 0.08)" }}
+            >
+              <div className="flex gap-3">
+                <ImageWithFallback
+                  src={shop.image}
+                  alt={shop.name}
+                  className="w-20 h-20 rounded-lg object-cover"
+                />
+                <div className="flex-1">
+                  <h4 className="text-sm font-semibold text-[#1F1F1F]">{shop.name}</h4>
+                  <p className="text-xs text-[#8A8A8A] mt-1">⭐ {shop.rating} ({shop.reviews} reviews)</p>
+                  <p className="text-xs text-[#8A8A8A]">{shop.distance} • {shop.priceRange}</p>
+                  <p className="text-xs text-[#6C4AB6] mt-1">{shop.specialties}</p>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
       {/* Sectioned service list */}
       <div className="mt-2">
         {spaSections.map((section, idx) => (
@@ -359,6 +432,7 @@ export default function SpaCategoryScreen({ onBack }: { onBack?: () => void }) {
           </div>
         ))}
       </div>
+
     </div>
   );
 }

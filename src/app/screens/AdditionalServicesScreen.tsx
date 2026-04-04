@@ -54,7 +54,7 @@ export function AdditionalServicesScreen({ onBack, onServiceClick }: AdditionalS
     },
     {
       id: 7,
-      name: "Flower Decoration",
+      name: "Florists",
       icon: Flower,
       color: "#F4A6C1",
       description: "Event and decor flowers"

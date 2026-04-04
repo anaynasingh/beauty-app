@@ -10,6 +10,21 @@ interface LoginScreenProps {
 export function LoginScreen({ onLogin, onSignUp }: LoginScreenProps) {
   const [language, setLanguage] = useState<"en" | "hi">("en");
 
+  const partnerCompanies = [
+    {
+      name: "Loreal",
+      logo: "https://logo.clearbit.com/loreal.com",
+    },
+    {
+      name: "Shehnaz Hussain",
+      logo: "https://logo.clearbit.com/shahnaz.in",
+    },
+    {
+      name: "Tony and Guy",
+      logo: "https://logo.clearbit.com/toniandguy.com",
+    },
+  ];
+
   return (
     <div className="h-screen flex flex-col bg-white px-6">
       <div className="flex justify-end pt-6 pb-4">
@@ -37,7 +52,7 @@ export function LoginScreen({ onLogin, onSignUp }: LoginScreenProps) {
         </div>
       </div>
 
-      <div className="flex-1 flex flex-col justify-center pb-20">
+      <div className="flex-1 flex flex-col justify-center pb-10">
         <div className="flex flex-col items-center mb-12">
           <div className="w-20 h-20 bg-[#F3EEFF] rounded-full flex items-center justify-center mb-4">
             <Sparkles className="w-10 h-10 text-[#6C4AB6]" />
@@ -82,6 +97,27 @@ export function LoginScreen({ onLogin, onSignUp }: LoginScreenProps) {
             Sign Up
           </button>
         </p>
+      </div>
+
+      <div className="pb-6">
+        <p className="text-xs text-[#8A8A8A] mb-3">Partner Companies</p>
+        <div className="grid grid-cols-3 gap-3">
+          {partnerCompanies.map((company) => (
+            <div
+              key={company.name}
+              className="bg-white border border-[#EDE7FA] rounded-xl p-2 flex flex-col items-center justify-center"
+              style={{ boxShadow: "0 2px 10px rgba(108, 74, 182, 0.08)" }}
+            >
+              <img
+                src={company.logo}
+                alt={company.name}
+                className="h-8 w-full object-contain mb-1"
+                loading="lazy"
+              />
+              <span className="text-[10px] text-[#6A6A6A] text-center leading-tight">{company.name}</span>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
